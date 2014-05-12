@@ -2,15 +2,25 @@
 Ported from Actel STAPL Player v1.1, which is based on JAM STAPL Player v2.2. 
 
 	EXAMPLES for MPCEX hardware:
-Scan the JTAG chain:
-  sudo ./stapl_player -aREAD_IDCODES scan_chain.stp
 
-Flush the carrier board with the file ../image/CARB_U1-R6A.stp (it takes 2 minutes):
-  sudo ./stapl_player -aPROGRAM ../image/CARB_U1-R6A.stp -poi8 -pod1
+Scan the first JTAG chain:
+  sudo ./StaplPlayer -aREAD_IDCODES scan_chain.stp
+
+Read IDCODE of the first ACTEL device in the JTAG chain
+  sudo ./StaplPlayer -aREAD_IDCODE scan_chain.stp -poi8 -pod1
+
+Read IDCODE of the second ACTEL device in the JTAG chain
+  sudo ./StaplPlayer -aREAD_IDCODE scan_chain.stp -pei8 -ped1
+
+Scan the second JTAG chain
+  sudo ./StaplPlayer -aREAD_IDCODES scan_chain.stp -g
+
+Flush the carrier board with the file ../image/CARB_U1-R6A.stp (it takes ~2 minutes):
+  sudo ./StaplPlayer -aPROGRAM ../image/CARB_U1-R6A.stp -poi8 -pod1
 
 Read IDCODE from the second board in chain (Carrier Board):
-  sudo ./stapl_player -aREAD_IDCODE ../image/CARB_U1-R6A.stp -poi8 -pod1
+  sudo ./StaplPlayer -aREAD_IDCODE ../image/CARB_U1-R6A.stp -poi8 -pod1
 
 Read IDCODE from the first board in chain (ProtoFEM):
-  sudo ./stapl_player -aREAD_IDCODE ../image/CARB_U1-R6A.stp -pei8 -ped1
+  sudo ./StaplPlayer -aREAD_IDCODE ../image/CARB_U1-R6A.stp -pei8 -ped1
 

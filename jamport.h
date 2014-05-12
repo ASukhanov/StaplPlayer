@@ -43,8 +43,4 @@
 /* change this line to build a different port */
 #define PORT UNIX 
 
-#define WPI 1	//Raspberry Pi P1 pins using WiringPi library
-
-#define JTAGIO WPI
-
 #endif /* INC_JAMPORT_H */

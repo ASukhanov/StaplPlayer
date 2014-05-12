@@ -77,14 +77,22 @@ typedef unsigned long DWORD;
 #include "abiactel.h"
 #endif
 
+#define WPI 1   //Raspberry Pi P1 pins using WiringPi library
+#define JTAGIO WPI
+
 #if JTAGIO == WPI
 #include <unistd.h>
 #include <ctype.h>
 #include <wiringPi.h>
-#define WPI_TCK	7	//P1.7
-#define WPI_TDO	2	//P1.13
-#define	WPI_TMS	0	//P1.11
-#define WPI_TDI	1	//P1.12
+#define WPI_JTAG1_TCK	7	//P1.7
+#define WPI_JTAG1_TDO	2	//P1.13
+#define	WPI_JTAG1_TMS	0	//P1.11
+#define WPI_JTAG1_TDI	1	//P1.12
+#define WPI_JTAG2_TCK 3   //P1.15
+#define WPI_JTAG2_TDO 6   //P1.22
+#define WPI_JTAG2_TMS 4   //P1.16
+#define WPI_JTAG2_TDI 5   //P1.18
+int	jtag_cable_WPI = 0;
 #endif
 
 #if PORT == WINDOWS
@@ -339,11 +347,22 @@ int jam_jtag_io(int tms, int tdi, int read_tdo)
 #else
 #if JTAGIO == WPI
 		data = tdi ? 1 : 0;
-		digitalWrite(WPI_TMS,tms);
-		digitalWrite(WPI_TDI,data);
-		digitalWrite(WPI_TCK,1);
-		tdo = digitalRead(WPI_TDO);
-		digitalWrite(WPI_TCK,0);
+		if(jtag_cable_WPI == 0)
+		{
+			digitalWrite(WPI_JTAG1_TMS,tms);
+			digitalWrite(WPI_JTAG1_TDI,data);
+			digitalWrite(WPI_JTAG1_TCK,1);
+			tdo = digitalRead(WPI_JTAG1_TDO);
+			digitalWrite(WPI_JTAG1_TCK,0);
+		}
+		else
+		{
+            digitalWrite(WPI_JTAG2_TMS,tms);
+            digitalWrite(WPI_JTAG2_TDI,data);
+            digitalWrite(WPI_JTAG2_TCK,1);
+            tdo = digitalRead(WPI_JTAG2_TDO);
+            digitalWrite(WPI_JTAG2_TCK,0);
+		}
 		if (verbose&2) fprintf(stderr,"tms/i/o=%1i,%1i,%1i\n",tms,data,tdo); //&RA
 #else
 		/* parallel port interface not available */
@@ -712,10 +731,20 @@ static void io_setup()
       fprintf(stderr,"ERROR in wiringPiSetup()\n");
     else
     {
-      pinMode(WPI_TCK,OUTPUT);
-      pinMode(WPI_TMS,OUTPUT);
-      pinMode(WPI_TDI,OUTPUT);
-      pinMode(WPI_TDO,INPUT);
+		if(jtag_cable_WPI == 0)
+		{
+			pinMode(WPI_JTAG1_TCK,OUTPUT);
+			pinMode(WPI_JTAG1_TMS,OUTPUT);
+			pinMode(WPI_JTAG1_TDI,OUTPUT);
+			pinMode(WPI_JTAG1_TDO,INPUT);
+		}
+		else
+		{
+            pinMode(WPI_JTAG2_TCK,OUTPUT);
+            pinMode(WPI_JTAG2_TMS,OUTPUT);
+            pinMode(WPI_JTAG2_TDI,OUTPUT);
+            pinMode(WPI_JTAG2_TDO,INPUT);
+		}
     }
     if (verbose&4) fprintf(stderr,"IO setup\n");
 #endif
@@ -725,10 +754,20 @@ static void io_shutdown(void)
 #if JTAGIO == WPI
     if(reset_jtag)
     {
-    pinMode (WPI_TCK,INPUT);
-    pinMode (WPI_TMS,INPUT);
-    pinMode (WPI_TDI,INPUT);
-    pinMode (WPI_TDO,INPUT);
+	if(jtag_cable_WPI == 0)
+	{
+    	pinMode (WPI_JTAG1_TCK,INPUT);
+    	pinMode (WPI_JTAG1_TMS,INPUT);
+    	pinMode (WPI_JTAG1_TDI,INPUT);
+    	pinMode (WPI_JTAG1_TDO,INPUT);
+	}
+	else
+	{
+	    pinMode (WPI_JTAG2_TCK,INPUT);
+        pinMode (WPI_JTAG2_TMS,INPUT);
+        pinMode (WPI_JTAG2_TDI,INPUT);
+        pinMode (WPI_JTAG2_TDO,INPUT);
+	}
     if (verbose&4) fprintf(stderr,"IO shutdown\n");
     }
 #endif
@@ -988,6 +1027,11 @@ int main(int argc, char **argv)
 					error = TRUE;
 				}
 				break;
+#if JTAGIO == WPI
+			case 'G':
+				jtag_cable_WPI = 1;
+				break;
+#endif
 			default:
 				error = TRUE;
 				break;
@@ -1042,6 +1086,9 @@ int main(int argc, char **argv)
 		//&RA
 		fprintf(stderr, "    -j<TMS><TDI>: execute JTAG cycle with TMS and TDI\n");
         fprintf(stderr, "    -p(e/o)(i/d) val; set (PRE/POST)(IR/DR) chain parameter:\n");
+#if JTAGIO == WPI
+        fprintf(stderr, "    -g			 : use alternative GPIO set (WPI_JTAG2_xxx)\n");
+#endif
 		exit_status = 1;
 	}
 	if(filename == NULL)	
