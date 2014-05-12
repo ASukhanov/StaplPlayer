@@ -1,0 +1,109 @@
+cc   -g -O2   -Wall -c jamarray.c -o jamarray.o
+cc   -g -O2   -Wall -c jamcomp.c -o jamcomp.o
+cc   -g -O2   -Wall -c jamcrc.c -o jamcrc.o
+cc   -g -O2   -Wall -c jamexec.c -o jamexec.o
+jamexec.c: In function ‘jam_process_uses_item’:
+jamexec.c:1585:6: warning: enumeration value ‘JAM_ILLEGAL_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_ACTION_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_BOOLEAN_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_CALL_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_CRC_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_DRSCAN_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_DRSTOP_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_ENDDATA_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_ENDPROC_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_EXIT_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_EXPORT_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_FOR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_FREQUENCY_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_GOTO_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_IF_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_INTEGER_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_IRSCAN_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_IRSTOP_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_LET_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_NEXT_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_NOTE_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_PADDING_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_POP_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_POSTDR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_POSTIR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_PREDR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_PREIR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_PRINT_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_PUSH_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_REM_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_RETURN_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_STATE_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_TRST_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_VECTOR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_VMAP_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_WAIT_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1585:6: warning: enumeration value ‘JAM_INSTR_MAX’ not handled in switch [-Wswitch]
+jamexec.c: In function ‘jam_call_procedure’:
+jamexec.c:1948:6: warning: enumeration value ‘JAM_ILLEGAL_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_ACTION_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_BOOLEAN_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_CALL_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_CRC_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_DRSCAN_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_DRSTOP_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_ENDDATA_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_ENDPROC_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_EXIT_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_EXPORT_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_FOR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_FREQUENCY_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_GOTO_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_IF_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_INTEGER_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_IRSCAN_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_IRSTOP_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_LET_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_NEXT_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_NOTE_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_PADDING_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_POP_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_POSTDR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_POSTIR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_PREDR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_PREIR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_PRINT_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_PUSH_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_REM_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_RETURN_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_STATE_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_TRST_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_VECTOR_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_VMAP_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_WAIT_INSTR’ not handled in switch [-Wswitch]
+jamexec.c:1948:6: warning: enumeration value ‘JAM_INSTR_MAX’ not handled in switch [-Wswitch]
+jamexec.c: In function ‘jam_process_exit’:
+jamexec.c:3778:3: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
+cc   -g -O2   -Wall -c jamexp.c -o jamexp.o
+jamexp.c:1533:1: warning: return type defaults to ‘int’ [-Wreturn-type]
+cc   -g -O2   -Wall -c jamheap.c -o jamheap.o
+cc   -g -O2   -Wall -c jamjtag.c -o jamjtag.o
+cc   -g -O2   -Wall -c jamnote.c -o jamnote.o
+cc   -g -O2   -Wall -c jamstack.c -o jamstack.o
+cc   -g -O2   -Wall -c jamstub.c -o jamstub.o
+jamstub.c: In function ‘jam_jtag_io’:
+jamstub.c:275:3: warning: implicit declaration of function ‘write’ [-Wimplicit-function-declaration]
+jamstub.c:283:5: warning: implicit declaration of function ‘read’ [-Wimplicit-function-declaration]
+jamstub.c:258:6: warning: unused variable ‘data’ [-Wunused-variable]
+jamstub.c: In function ‘calibrate_delay’:
+jamstub.c:714:8: warning: unused variable ‘tick_count2’ [-Wunused-variable]
+jamstub.c:713:8: warning: unused variable ‘tick_count1’ [-Wunused-variable]
+jamstub.c:712:6: warning: unused variable ‘count’ [-Wunused-variable]
+jamstub.c:711:6: warning: unused variable ‘sample’ [-Wunused-variable]
+jamstub.c: In function ‘main’:
+jamstub.c:952:2: warning: implicit declaration of function ‘access’ [-Wimplicit-function-declaration]
+jamstub.c:1215:5: warning: format ‘%ld’ expects argument of type ‘long int’, but argument 2 has type ‘int’ [-Wformat]
+jamstub.c: In function ‘initialize_jtag_hardware’:
+jamstub.c:1551:5: warning: implicit declaration of function ‘close’ [-Wimplicit-function-declaration]
+jamstub.c: At top level:
+jamstub.c:1906:0: warning: ignoring #pragma optimize  [-Wunknown-pragmas]
+cc   -g -O2   -Wall -c jamsym.c -o jamsym.o
+cc   -g -O2   -Wall -c jamutil.c -o jamutil.o
+cc   -g -O2   -Wall    ./jamarray.o ./jamcomp.o ./jamcrc.o ./jamexec.o ./jamexp.o ./jamheap.o ./jamjtag.o ./jamnote.o ./jamstack.o ./jamstub.o ./jamsym.o ./jamutil.o  -o stapl_player
+Type ./stapl_player to execute the program.

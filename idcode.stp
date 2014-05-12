@@ -1,0 +1,34 @@
+NOTE "CREATOR" "AAAA Tool Version 1.0";
+NOTE "DEVICE" "ABCD1234";
+NOTE "DATE" "1997/12/31";
+NOTE "STAPL_VERSION" "JEDS00-A";
+NOTE "ALG_VERSION" "3";
+NOTE "STACK_DEPTH" "2";
+NOTE "MAX_FREQ" "10000000"; '10MHz
+NOTE "TARGET" "1";
+NOTE "IDCODE" "00000001";
+
+ACTION READ_IDCODE = DO_READ_IDCODE;
+
+DATA data_id;
+INTEGER ir_length=2*5;
+ENDDATA;
+
+PROCEDURE DO_READ_IDCODE USES data_id;
+    'Declare variables for data arrays
+    BOOLEAN read_data[32];
+    BOOLEAN i_idcode[10] = #1001101000;
+    BOOLEAN ones_data[32] = $FFFFFFFF;
+    INTEGER i;
+    'Initialize device
+    STATE RESET;
+    EXPORT "STATE RESET",0;
+    'Load idcode instruction
+    IRSCAN ir_length, i_idcode[9..0];
+    EXPORT "IRSCAN",0;
+    'Capture idcode
+    DRSCAN 32, ones_data[31..0], CAPTURE read_data[31..0];
+    EXPORT "IDCODE", read_data[31..0];
+ENDPROC;
+
+CRC 8FFC;
