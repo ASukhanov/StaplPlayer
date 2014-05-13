@@ -315,7 +315,7 @@ int jam_jtag_io(int tms, int tdi, int read_tdo)
 			}
 			else
 			{
-				fprintf(stderr, "Error:  BitBlaster not responding\n");
+				printf( "Error:  BitBlaster not responding\n");
 			}
 		}
 
@@ -363,7 +363,7 @@ int jam_jtag_io(int tms, int tdi, int read_tdo)
             tdo = digitalRead(WPI_JTAG2_TDO);
             digitalWrite(WPI_JTAG2_TCK,0);
 		}
-		if (verbose&2) fprintf(stderr,"tms/i/o=%1i,%1i,%1i\n",tms,data,tdo); //&RA
+		if (verbose&2) printf("tms/i/o=%1i,%1i,%1i\n",tms,data,tdo); //&RA
 #else
 		/* parallel port interface not available */
 		tdo = 0;
@@ -636,7 +636,7 @@ int jam_vector_io
 			}
 			else
 			{
-				fprintf(stderr, "Error:  BitBlaster not responding\n");
+				printf( "Error:  BitBlaster not responding\n");
 			}
 		}
 		else
@@ -728,7 +728,7 @@ static void io_setup()
 {
 #if JTAGIO == WPI
     if (wiringPiSetup() == -1)
-      fprintf(stderr,"ERROR in wiringPiSetup()\n");
+      printf("ERROR in wiringPiSetup()\n");
     else
     {
 		if(jtag_cable_WPI == 0)
@@ -746,7 +746,7 @@ static void io_setup()
             pinMode(WPI_JTAG2_TDO,INPUT);
 		}
     }
-    if (verbose&4) fprintf(stderr,"IO setup\n");
+    if (verbose&4) printf("IO setup\n");
 #endif
 }
 static void io_shutdown(void)
@@ -768,7 +768,7 @@ static void io_shutdown(void)
         pinMode (WPI_JTAG2_TDI,INPUT);
         pinMode (WPI_JTAG2_TDO,INPUT);
 	}
-    if (verbose&4) fprintf(stderr,"IO shutdown\n");
+    if (verbose&4) printf("IO shutdown\n");
     }
 #endif
 }
@@ -829,9 +829,9 @@ void calibrate_delay(void)
 	one_ms_delay /= DELAY_SAMPLES;
 	//if(verbose)
 	//{
-	//	fprintf(stderr,"Checking calibrated delay for 10 s\n");
+	//	printf("Checking calibrated delay for 10 s\n");
 	//	delay_loop(10000*one_ms_delay);
-	//	fprintf(stderr,"10s passed\n");
+	//	printf("10s passed\n");
 	//}
 //#else
 //	one_ms_delay = 1000L;
@@ -907,7 +907,7 @@ int main(int argc, char **argv)
 	init_list[0] = NULL;
 
 	/* print out the version string and coiyright message */
-	//fprintf(stderr, "Jam STAPL Player Version 2.2\nCopyright (C) 1997-2000 Altera Corporation\n\n");
+	//printf( "Jam STAPL Player Version 2.2\nCopyright (C) 1997-2000 Altera Corporation\n\n");
 
 	for (arg = 1; arg < argc; arg++)
 	{
@@ -995,7 +995,7 @@ int main(int argc, char **argv)
 				{
                                         verbose = 1;
         /* print out the version string and coiyright message */
-        fprintf(stderr, "Jam STAPL Player Version 2.2\nCopyright (C) 1997-2000 Altera Corporation\n\n");
+        printf( "Jam STAPL Player Version 2.2\nCopyright (C) 1997-2000 Altera Corporation\n\n");
 				}
 				break;
 
@@ -1003,7 +1003,7 @@ int main(int argc, char **argv)
 				tms = (argv[arg][2]=='1') ? 1 : 0;
                                 tdi = (argv[arg][3]=='1') ? 1 : 0;
 				tdo = jam_jtag_io(tms,tdi,1);
-                                fprintf(stderr,"TDO(%i,%i)=%d\n",tms,tdi,tdo);
+                                printf("TDO(%i,%i)=%d\n",tms,tdi,tdo);
 				break;
 			case 'P':
 				sscanf(&argv[arg][4],"%d",&tdo);//get numerical value
@@ -1023,7 +1023,7 @@ int main(int argc, char **argv)
 				}
 				else
 				{
-					fprintf(stderr,"Wrong PRE/POST syntax\n");
+					printf("Wrong PRE/POST syntax\n");
 					error = TRUE;
 				}
 				break;
@@ -1053,7 +1053,7 @@ int main(int argc, char **argv)
 
 		if (error)
 		{
-			fprintf(stderr, "Illegal argument: \"%s\"\n", argv[arg]);
+			printf( "Illegal argument: \"%s\"\n", argv[arg]);
 			help = TRUE;
 			error = FALSE;
 		}
@@ -1062,32 +1062,32 @@ int main(int argc, char **argv)
 #if PORT == WINDOWS || PORT == DOS
 	if (specified_lpt_port && specified_com_port)
 	{
-		fprintf(stderr, "Error:  -s and -p options may not be used together\n\n");
+		printf( "Error:  -s and -p options may not be used together\n\n");
 		help = TRUE;
 	}
 #endif
 
 	if (help)
 	{
-		fprintf(stderr, "Usage:  stapl player [options] <filename>\n");
-		fprintf(stderr, "\nAvailable options:\n");
-		fprintf(stderr, "    -h          : show help message\n");
-		fprintf(stderr, "    -v          : show verbose messages\n");
-		fprintf(stderr, "    -a<action>  : specify action name (Jam STAPL)\n");
-		fprintf(stderr, "    -d<var=val> : initialize variable to specified value (Jam 1.1)\n");
-		fprintf(stderr, "    -d<proc=1>  : enable optional procedure (Jam STAPL)\n");
-		fprintf(stderr, "    -d<proc=0>  : disable recommended procedure (Jam STAPL)\n");
+		printf( "Usage:  stapl player [options] <filename>\n");
+		printf( "\nAvailable options:\n");
+		printf( "    -h          : show help message\n");
+		printf( "    -v          : show verbose messages\n");
+		printf( "    -a<action>  : specify action name (Jam STAPL)\n");
+		printf( "    -d<var=val> : initialize variable to specified value (Jam 1.1)\n");
+		printf( "    -d<proc=1>  : enable optional procedure (Jam STAPL)\n");
+		printf( "    -d<proc=0>  : disable recommended procedure (Jam STAPL)\n");
 #if PORT == WINDOWS || PORT == DOS
-		fprintf(stderr, "    -p<port>    : parallel port number or address (for ByteBlaster)\n");
-		fprintf(stderr, "    -c<cable>   : alternative download cable compatibility: -cl or -cx\n");
+		printf( "    -p<port>    : parallel port number or address (for ByteBlaster)\n");
+		printf( "    -c<cable>   : alternative download cable compatibility: -cl or -cx\n");
 #endif
-		fprintf(stderr, "    -s<port>    : serial port name (for BitBlaster)\n");
-		fprintf(stderr, "    -r          : don't reset JTAG TAP after use\n");
+		printf( "    -s<port>    : serial port name (for BitBlaster)\n");
+		printf( "    -r          : don't reset JTAG TAP after use\n");
 		//&RA
-		fprintf(stderr, "    -j<TMS><TDI>: execute JTAG cycle with TMS and TDI\n");
-        fprintf(stderr, "    -p(e/o)(i/d) val; set (PRE/POST)(IR/DR) chain parameter:\n");
+		printf( "    -j<TMS><TDI>: execute JTAG cycle with TMS and TDI\n");
+        printf( "    -p(e/o)(i/d) val; set (PRE/POST)(IR/DR) chain parameter:\n");
 #if JTAGIO == WPI
-        fprintf(stderr, "    -g			 : use alternative GPIO set (WPI_JTAG2_xxx)\n");
+        printf( "    -g			 : use alternative GPIO set (WPI_JTAG2_xxx)\n");
 #endif
 		exit_status = 1;
 	}
@@ -1096,13 +1096,13 @@ int main(int argc, char **argv)
 	else if ((workspace_size > 0) &&
 		((workspace = (char *) malloc((size_t) workspace_size)) == NULL))
 	{
-		fprintf(stderr, "Error: can't allocate memory (%d Kbytes)\n",
+		printf( "Error: can't allocate memory (%d Kbytes)\n",
 			(int) (workspace_size / 1024L));
 		exit_status = 1;
 	}
 	else if (access(filename, 0) != 0)
 	{
-		fprintf(stderr, "Error: can't access file \"%s\"\n", filename);
+		printf( "Error: can't access file \"%s\"\n", filename);
 		exit_status = 1;
 	}
 	else
@@ -1112,7 +1112,7 @@ int main(int argc, char **argv)
 
 		if ((fp = fopen(filename, "rb")) == NULL)
 		{
-			fprintf(stderr, "Error: can't open file \"%s\"\n", filename);
+			printf( "Error: can't open file \"%s\"\n", filename);
 			exit_status = 1;
 		}
 		else
@@ -1140,7 +1140,7 @@ int main(int argc, char **argv)
 #endif
 			if (file_buffer == NULL)
 			{
-				fprintf(stderr, "Error: can't allocate memory (%d Kbytes)\n",
+				printf( "Error: can't allocate memory (%d Kbytes)\n",
 					(int) (file_length / 1024L));
 				exit_status = 1;
 			}
@@ -1159,7 +1159,7 @@ int main(int argc, char **argv)
 					}
 					if (fread(file_buffer[page], 1, page_size, fp) != page_size)
 					{
-						fprintf(stderr, "Error reading file \"%s\"\n", filename);
+						printf( "Error reading file \"%s\"\n", filename);
 						exit_status = 1;
 					}
 				}
@@ -1167,7 +1167,7 @@ int main(int argc, char **argv)
 				if (fread(file_buffer, 1, (size_t) file_length, fp) !=
 					(size_t) file_length)
 				{
-					fprintf(stderr, "Error reading file \"%s\"\n", filename);
+					printf( "Error reading file \"%s\"\n", filename);
 					exit_status = 1;
 				}
 #endif
@@ -1674,7 +1674,7 @@ void initialize_jtag_hardware()
 		com_port = open(serial_port_name, O_RDWR);
 		if (com_port == -1)
 		{
-			fprintf(stderr, "Error: can't open serial port \"%s\"\n",
+			printf( "Error: can't open serial port \"%s\"\n",
 				serial_port_name);
 		}
 		else
@@ -1700,7 +1700,7 @@ void initialize_jtag_hardware()
 			}
 			else
 			{
-				fprintf(stderr, "Error: BitBlaster is not responding on %s\n",
+				printf( "Error: BitBlaster is not responding on %s\n",
 					serial_port_name);
 				close(com_port);
 				com_port = -1;
@@ -1719,7 +1719,7 @@ void initialize_jtag_hardware()
 		else
 		{
 #ifdef __BORLANDC__
-			fprintf(stderr, "Error: parallel port access is not available\n");
+			printf( "Error: parallel port access is not available\n");
 #else
 			if (!specified_lpt_addr)
 			{
@@ -1853,7 +1853,7 @@ BOOL initialize_nt_driver()
 
 	if (nt_device_handle == INVALID_HANDLE_VALUE)
 	{
-		fprintf(stderr,
+		printf(
 			"I/O error:  cannot open device %s\nCheck port number and device driver installation",
 			nt_lpt_str);
 	}
@@ -1877,7 +1877,7 @@ BOOL initialize_nt_driver()
 				}
 				else
 				{
-					fprintf(stderr,
+					printf(
 						"I/O error:  device driver %s is not compatible\n(Driver version is %lu, expected version %lu.\n",
 						nt_lpt_str,
 						(unsigned long) buffer[0],
@@ -1886,7 +1886,7 @@ BOOL initialize_nt_driver()
 			}
 			else
 			{
-				fprintf(stderr, "I/O error:  device driver %s is not compatible.\n",
+				printf( "I/O error:  device driver %s is not compatible.\n",
 					nt_lpt_str);
 			}
 		}
@@ -1960,7 +1960,7 @@ void write_byteblaster
 
 			if ((!status) || (returned_length != 0))
 			{
-				fprintf(stderr, "I/O error:  Cannot access ByteBlaster hardware\n");
+				printf( "I/O error:  Cannot access ByteBlaster hardware\n");
 				CloseHandle(nt_device_handle);
 				exit(1);
 			}
@@ -2016,7 +2016,7 @@ int read_byteblaster
 
 		if ((!status) || (returned_length != sizeof(int)))
 		{
-			fprintf(stderr, "I/O error:  Cannot access ByteBlaster hardware\n");
+			printf( "I/O error:  Cannot access ByteBlaster hardware\n");
 			CloseHandle(nt_device_handle);
 			exit(1);
 		}
@@ -2051,7 +2051,7 @@ void flush_ports(void)
 
 	if ((!status) || ((port_io_count * sizeof(struct PORT_IO_LIST_STRUCT)) != n_writes))
 	{
-		fprintf(stderr, "I/O error:  Cannot access ByteBlaster hardware\n");
+		printf( "I/O error:  Cannot access ByteBlaster hardware\n");
 		CloseHandle(nt_device_handle);
 		exit(1);
 	}
