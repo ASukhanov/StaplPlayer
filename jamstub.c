@@ -29,11 +29,7 @@
 /****************************************************************************/
 /****************************************************************************/
 /*																			*/
-<<<<<<< HEAD
 /*	Andrei Sukhanov v3.2	August: 2014										*/
-=======
-/*	Andrei Sukhanov v3.1	August: 2014										*/
->>>>>>> e3696dc4b9b084d91eb730cd8be372df05871e0e
 /*																			*/
 /****************************************************************************/
 #ifndef NO_ALTERA_STDIO
@@ -912,14 +908,6 @@ int main(int argc, char **argv)
 
 	init_list[0] = NULL;
 
-<<<<<<< HEAD
-=======
-	/* print out the version string and coiyright message */
-	//printf( "Jam STAPL Player Version 2.2\nCopyright (C) 1997-2000 Altera Corporation\n\n");
-	printf("STAPL Player Version 3.1\n");
-	printf("Ported to RPi from Jam STAPL Player Version 2.2\nCopyright (C) 1997-2000 Altera Corporation\n");
-
->>>>>>> e3696dc4b9b084d91eb730cd8be372df05871e0e
 	for (arg = 1; arg < argc; arg++)
 	{
 #if PORT == UNIX
