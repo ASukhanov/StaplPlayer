@@ -29,7 +29,7 @@
 /****************************************************************************/
 /****************************************************************************/
 /*																			*/
-/*	Andrei Sukhanov v1.2	May 2014										*/
+/*	Andrei Sukhanov v3.2	August: 2014										*/
 /*																			*/
 /****************************************************************************/
 #ifndef NO_ALTERA_STDIO
@@ -893,6 +893,8 @@ int main(int argc, char **argv)
 	int time_delta = 0;
 	char *workspace = NULL;
 	char *action = NULL;
+	int interactive = 0;
+	char action_string[80];
 	char *init_list[10];
 	int init_count = 0;
 	FILE *fp = NULL;
@@ -905,9 +907,6 @@ int main(int argc, char **argv)
 	verbose = FALSE;
 
 	init_list[0] = NULL;
-
-	/* print out the version string and coiyright message */
-	//printf( "Jam STAPL Player Version 2.2\nCopyright (C) 1997-2000 Altera Corporation\n\n");
 
 	for (arg = 1; arg < argc; arg++)
 	{
@@ -995,7 +994,8 @@ int main(int argc, char **argv)
 				{
                                         verbose = 1;
         /* print out the version string and coiyright message */
-        printf( "Jam STAPL Player Version 2.2\nCopyright (C) 1997-2000 Altera Corporation\n\n");
+        printf("STAPL Player Version 3.2\n");
+        printf("Ported to RPi from Jam STAPL Player Version 2.2\nCopyright (C) 1997-2000 Altera Corporation\n");
 				}
 				break;
 
@@ -1032,6 +1032,9 @@ int main(int argc, char **argv)
 				jtag_cable_WPI = 1;
 				break;
 #endif
+			case 'I':
+				interactive = 1;
+				break;
 			default:
 				error = TRUE;
 				break;
@@ -1274,6 +1277,16 @@ int main(int argc, char **argv)
 			/*
 			*	Execute the JAM program
 			*/
+			while(1)
+			{
+			if(interactive)
+			{
+			  printf("Enter action:");
+			  if(fgets(action_string,80,stdin) == NULL)
+			    strcpy(action_string," ");
+			  action_string[strlen(action_string)-1]=0; //trim the newline
+			  action = action_string;
+			}
 			time(&start_time);
 			exec_result = jam_execute(
 #if PORT==DOS
@@ -1376,6 +1389,8 @@ int main(int argc, char **argv)
 					time_delta / 3600,			/* hours */
 					(time_delta % 3600) / 60,	/* minutes */
 					time_delta % 60);			/* seconds */
+			}
+			if(!interactive)	break;
 			}
 		}
 	}
