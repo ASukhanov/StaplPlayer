@@ -1,6 +1,6 @@
 # Wrapper for StaplPlayer
 # Packs program arguments into a STAPL file stapl.stp and plays it using StaplPlayer
-# Version 2	2014-08-20
+# Version 2	2014-08-21
 import sys
 if len(sys.argv) < 2:
   print('No arguments\n Usage example : staplcmd i8 1 2 i10 deadface fe0dfe0f')
@@ -16,13 +16,10 @@ f.write('BOOLEAN irdata[10*32];\n')
 f.write('ENDDATA;\n')
 
 f.write('PROCEDURE DO_TRANS USES PARAMETERS;\n')
-f.write('IRSTOP IRPAUSE;\n')
-f.write('DRSTOP DRPAUSE;\n')
 for s in sys.argv[1:]:
   if s[0] == 'i':
     f.write('IRSCAN 8, $' + s[1:] + ', CAPTURE irdata[7..0];\n')
   else:
-    f.write('STATE IDLE;\n')
     f.write('DRSCAN 32, $' + s + ', CAPTURE idcode_data[31..0];\n')
     f.write('EXPORT "Shifted Out:", idcode_data[31..0];\n')
 f.write('ENDPROC;\n')

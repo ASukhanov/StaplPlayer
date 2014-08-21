@@ -1,5 +1,5 @@
 # Interactive wrapper for StaplPlayer
-# Version 2	2014-08-20
+# Version 2	2014-08-21
 # Example of a session of shifting in 3 numbers into IR$10 and IR$12 :
 #i10
 #1
@@ -32,8 +32,6 @@ while 1:
     f.write('ENDDATA;\n')
 
     f.write('PROCEDURE DO_TRANS USES PARAMETERS;\n')
-    f.write('IRSTOP IRPAUSE;\n')
-    f.write('DRSTOP DRPAUSE;\n')
     f.write(irscan_lines)
     f.write(drscan_lines)
     f.write('ENDPROC;\n')
@@ -55,6 +53,5 @@ while 1:
     irscan_lines = ''
     drscan_lines = ''
   else:  
-    drscan_lines += 'STATE IDLE;\n'
     drscan_lines += 'DRSCAN 32, $' + s + ', CAPTURE idcode_data[31..0];\n'
     drscan_lines += 'EXPORT "Shifted Out:", idcode_data[31..0];\n'
