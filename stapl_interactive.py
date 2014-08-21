@@ -1,4 +1,5 @@
 # Interactive wrapper for StaplPlayer
+# Version 2	2014-08-20
 # Example of a session of shifting in 3 numbers into IR$10 and IR$12 :
 #i10
 #1
@@ -50,10 +51,10 @@ while 1:
       retval = p.wait()
   elif s[0] == 'i':
     irscan_lines += 'IRSCAN 8, $' + s[1:] + ', CAPTURE irdata[7..0];\n'
-    irscan_lines += ('WAIT IDLE, 1 CYCLES;\n')
   elif s[0] == 'n':	#reset command list
     irscan_lines = ''
     drscan_lines = ''
   else:  
+    drscan_lines += 'STATE IDLE;\n'
     drscan_lines += 'DRSCAN 32, $' + s + ', CAPTURE idcode_data[31..0];\n'
     drscan_lines += 'EXPORT "Shifted Out:", idcode_data[31..0];\n'
