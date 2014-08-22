@@ -10,7 +10,7 @@ import subprocess
 import string
 
 outLines = ''
-print('Enter list of commands finished by empty line:')
+print('Enter list of commands (p to play the list):')
 while 1:
   l=raw_input('')
   if len(l) == 0:
