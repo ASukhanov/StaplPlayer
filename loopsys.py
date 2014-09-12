@@ -1,8 +1,17 @@
+#!/usr/bin/python
+import sys
+
 from subprocess import call
 from time import sleep
 
-for ii in range(100):
-#    call(['gpio','readall'])
-#    call('sudo ./stapl_player -v -aREAD_IDCODE idcode.stp', shell=True)
-    call("sudo ./stapl_player -r -aREAD_IDCODE idcode.stp",shell=True)
+if len(sys.argv) < 3:
+  print("Usage: ./loopsys ntimes 'command line'")
+  exit()
+
+nn = int(sys.argv[1])
+ss = sys.argv[2]
+
+for ii in range(nn):
+    print(' Executing \"' + ss +'\" ' + str(nn-ii) + ' times')
+    call(ss,shell=True)
     sleep(1)	

@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # Interactive wrapper for StaplPlayer
 # Version 3	2014-08-22
 #
@@ -64,7 +65,7 @@ while 1:
     elif s[0] == 'n':	# reset command list
       outLines = ''
     elif all(c in string.hexdigits for c in s):	# DRSCAN instruction
-      outLines += 'DRSCAN 32, $' + s + ', CAPTURE idcode_data[31..0];\n'
+      outLines += 'DRSCAN 32, $' + s.rjust(8,'0') + ', CAPTURE idcode_data[31..0];\n'
       outLines += 'EXPORT "Shifted Out:", idcode_data[31..0];\n'
     else:
       print('Unknown token: '+s)
