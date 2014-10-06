@@ -1,0 +1,53 @@
+'Dump header and trailer of one full FEM event
+
+ACTION	DUMPALL = DO_DUMPALL;
+
+ACTION  DUMP16 = DO_DUMP16;
+
+ACTION  SKIP = DO_SKIP;
+
+ACTION  DUMPHDR = 
+        DO_DUMP16,
+	DO_SKIP,
+        DO_DUMP16,
+        DO_DUMP16;
+
+ACTION DDUMP16 =
+	DO_DUMP16,
+	DO_DUMP16;
+
+DATA PARAMETERS;
+BOOLEAN idcode_data[32*10];
+BOOLEAN irdata[10*32];
+INTEGER ii;
+INTEGER jj;
+ENDDATA;
+
+
+PROCEDURE DO_DUMP16 USES PARAMETERS;
+IRSCAN 8, $22, CAPTURE irdata[7..0];
+for ii = 1 to 16 step 1;
+DRSCAN 32, $0, CAPTURE idcode_data[31..0];
+EXPORT "Shifted Out:", idcode_data[31..0];
+NEXT ii;
+ENDPROC;
+
+PROCEDURE DO_SKIP16 USES PARAMETERS;
+IRSCAN 8, $22, CAPTURE irdata[7..0];
+for ii = 1 to 16 step 1;
+DRSCAN 32, $0, CAPTURE idcode_data[31..0];
+ENDPROC;
+
+PROCEDURE DO_DUMPALL USES PARAMETERS;
+IRSCAN 8, $22, CAPTURE irdata[7..0];
+for ii = 1 to 64 step 1;
+CALL DO_DUMP16;
+next ii;
+ENDPROC;
+
+PROCEDURE DO_SKIP USES PARAMETERS;
+for jj = 1 to 3072 step 1;  
+DRSCAN 32, $0, CAPTURE idcode_data[31..0];
+next jj;
+ENDPROC;
+
