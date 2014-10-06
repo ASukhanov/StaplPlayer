@@ -17,7 +17,12 @@ f.write('BOOLEAN irdata[10*32];\n')
 f.write('ENDDATA;\n')
 
 f.write('PROCEDURE DO_TRANS USES PARAMETERS;\n')
+splayer_option = ''
+
 for s in sys.argv[1:]:
+  if s == '-g': #use second JTAG chain
+    splayer_option = '-g'
+    continue
   if s[0] == 'i':
     f.write('IRSCAN 8, $' + s[1:] + ', CAPTURE irdata[7..0];\n')
   else:
@@ -34,7 +39,10 @@ f.close()
 
 # execute action
 import subprocess
-p = subprocess.Popen('StaplPlayer -aTRANS /run/shm/stapl.stp', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+cmdline = 'StaplPlayer ' + splayer_option + ' -aTRANS /run/shm/stapl.stp'
+#print('Executing:'+cmdline)
+
+p = subprocess.Popen(cmdline, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for line in p.stdout.readlines():
   print line,
 retval = p.wait()
