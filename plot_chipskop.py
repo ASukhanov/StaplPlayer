@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 import subprocess
 import datetime
 
-ofname = '/run/shm/' + datetime.datetime.today().strftime("csk_%y%m%d%H%M.wpl")
+#ofname = '/run/shm/' + datetime.datetime.today().strftime("csk_%y%m%d%H%M.wpl")
+ofname = '/tmp/' + datetime.datetime.today().strftime("csk_%y%m%d%H%M.wpl")
 ofile  = open(ofname,'w')
 
 valnum = 0
