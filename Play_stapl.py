@@ -2,11 +2,17 @@
 # Wrapper for StaplPlayer
 # Packs program arguments into a STAPL file stapl.stp and plays it using StaplPlayer
 # Version 3	2014-10-21
-
+# Version 4     2016-02-19. Using environment variables.  
+# Version v5	2016-04-01. sp_option_passthrough comes from -o option to work with XU2 command port
 import sys
+import os
+gpio_jtag0_cs = int(os.environ['GPIO_JTAG0_CS'])
+gpio_jtag1_cs = int(os.environ['GPIO_JTAG1_CS'])
+sp_option_passthrough = ''
 
 #the following is needed only for -c option
 import wiringpi2
+
 
 if len(sys.argv) < 2:
   print('No arguments\n Usage example : staplcmd i8 1 2 i10 deadface fe0dfe0f')
@@ -32,8 +38,12 @@ for s in sys.argv[1:]:
   if s == '-c': # set the path to work with carrier boards
     import wiringpi2
     wiringpi2.wiringPiSetupSys()
-    work_with_carrier = 8	# GPIO for the carrier select[0] line in RPiLVDS board
+    work_with_carrier = gpio_jtag0_cs	# GPIO for the carrier select[0] line in RPiLVDS board
+    sp_option_passthrough = os.environ['SP_OPTION_PASSTHROUGH']    
     continue
+  #if s== '-o': #StaplPlayer will be called with -o option
+  #  sp_option_passthrough = '-o'
+  #  continue
   if s[0] == 'i':
     f.write('IRSCAN 8, $' + s[1:] + ', CAPTURE irdata[7..0];\n')
   else:
@@ -42,9 +52,12 @@ for s in sys.argv[1:]:
 f.write('ENDPROC;\n')
 f.close()
 
+print("work_with_carrier="+str(work_with_carrier))
+print("sp_option_passthrough="+sp_option_passthrough) 
+
 if (work_with_carrier != 0):	# set route to carrier board
   if (splayer_option == '-g'):
-     work_with_carrier = 7	# GPIO for the carrier select[1] line in RPiLVDS board
+     work_with_carrier = gpio_jtag1_cs	# GPIO for the carrier select[1] line in RPiLVDS board
   wiringpi2.pinMode(work_with_carrier,1)
   print('Executing wiringpi2.digitalWrite('+str(work_with_carrier)+',1)')
   wiringpi2.digitalWrite(work_with_carrier,1)
@@ -61,8 +74,8 @@ if (work_with_carrier != 0):	# set route to carrier board
 
 # execute action
 import subprocess
-cmdline = 'StaplPlayer ' + splayer_option + ' -aTRANS /run/shm/stapl.stp'
-#print('Executing:'+cmdline)
+cmdline = 'StaplPlayer ' + splayer_option + ' ' + sp_option_passthrough +' -aTRANS /run/shm/stapl.stp'
+print('Executing:'+cmdline)
 
 p = subprocess.Popen(cmdline, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for line in p.stdout.readlines():

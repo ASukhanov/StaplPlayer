@@ -28,9 +28,11 @@
 /*																			*/
 /****************************************************************************/
 /****************************************************************************/
-/*																			*/
-/*	Andrei Sukhanov v3.2	August: 2014										*/
-/*																			*/
+/*									    */
+/*	Andrei Sukhanov v3.2	August: 2014                                */
+/*      Andrei Sukhanov v3.3    2016-02-18 Alternative TDO (to work with port FEM XU2 */
+/*      A.Sukhanov v3.4		2016-03-31 Corrected WPI_JTAG1/2_TDO2 = 13/20 */
+/*									    */
 /****************************************************************************/
 #ifndef NO_ALTERA_STDIO
 #define NO_ALTERA_STDIO
@@ -86,13 +88,18 @@ typedef unsigned long DWORD;
 #include <wiringPi.h>
 #define WPI_JTAG1_TCK	7	//P1.7
 #define WPI_JTAG1_TDO	2	//P1.13
+#define WPI_JTAG1_TDO2  13      //P1.33 corrected in v3.4
 #define	WPI_JTAG1_TMS	0	//P1.11
 #define WPI_JTAG1_TDI	1	//P1.12
 #define WPI_JTAG2_TCK 3   //P1.15
 #define WPI_JTAG2_TDO 6   //P1.22
+#define WPI_JTAG2_TDO2 20  //P1.38 corrected in v3.4
 #define WPI_JTAG2_TMS 4   //P1.16
 #define WPI_JTAG2_TDI 5   //P1.18
-int	jtag_cable_WPI = 0;
+int	jtag_WPI_TCK = WPI_JTAG1_TCK;
+int     jtag_WPI_TDO = WPI_JTAG1_TDO;
+int     jtag_WPI_TMS = WPI_JTAG1_TMS;
+int     jtag_WPI_TDI = WPI_JTAG1_TDI;
 #endif
 
 #if PORT == WINDOWS
@@ -347,22 +354,11 @@ int jam_jtag_io(int tms, int tdi, int read_tdo)
 #else
 #if JTAGIO == WPI
 		data = tdi ? 1 : 0;
-		if(jtag_cable_WPI == 0)
-		{
-			digitalWrite(WPI_JTAG1_TMS,tms);
-			digitalWrite(WPI_JTAG1_TDI,data);
-			digitalWrite(WPI_JTAG1_TCK,1);
-			tdo = digitalRead(WPI_JTAG1_TDO);
-			digitalWrite(WPI_JTAG1_TCK,0);
-		}
-		else
-		{
-            digitalWrite(WPI_JTAG2_TMS,tms);
-            digitalWrite(WPI_JTAG2_TDI,data);
-            digitalWrite(WPI_JTAG2_TCK,1);
-            tdo = digitalRead(WPI_JTAG2_TDO);
-            digitalWrite(WPI_JTAG2_TCK,0);
-		}
+			digitalWrite(jtag_WPI_TMS,tms);
+			digitalWrite(jtag_WPI_TDI,data);
+			digitalWrite(jtag_WPI_TCK,1);
+			tdo = digitalRead(jtag_WPI_TDO);
+			digitalWrite(jtag_WPI_TCK,0);
 		if (verbose&2) printf("tms/i/o=%1i,%1i,%1i\n",tms,data,tdo); //&RA
 #else
 		/* parallel port interface not available */
@@ -731,20 +727,10 @@ static void io_setup()
       printf("ERROR in wiringPiSetup()\n");
     else
     {
-		if(jtag_cable_WPI == 0)
-		{
-			pinMode(WPI_JTAG1_TCK,OUTPUT);
-			pinMode(WPI_JTAG1_TMS,OUTPUT);
-			pinMode(WPI_JTAG1_TDI,OUTPUT);
-			pinMode(WPI_JTAG1_TDO,INPUT);
-		}
-		else
-		{
-            pinMode(WPI_JTAG2_TCK,OUTPUT);
-            pinMode(WPI_JTAG2_TMS,OUTPUT);
-            pinMode(WPI_JTAG2_TDI,OUTPUT);
-            pinMode(WPI_JTAG2_TDO,INPUT);
-		}
+			pinMode(jtag_WPI_TCK,OUTPUT);
+			pinMode(jtag_WPI_TMS,OUTPUT);
+			pinMode(jtag_WPI_TDI,OUTPUT);
+			pinMode(jtag_WPI_TDO,INPUT);
     }
     if (verbose&4) printf("IO setup\n");
 #endif
@@ -754,20 +740,10 @@ static void io_shutdown(void)
 #if JTAGIO == WPI
     if(reset_jtag)
     {
-	if(jtag_cable_WPI == 0)
-	{
-    	pinMode (WPI_JTAG1_TCK,INPUT);
-    	pinMode (WPI_JTAG1_TMS,INPUT);
-    	pinMode (WPI_JTAG1_TDI,INPUT);
-    	pinMode (WPI_JTAG1_TDO,INPUT);
-	}
-	else
-	{
-	    pinMode (WPI_JTAG2_TCK,INPUT);
-        pinMode (WPI_JTAG2_TMS,INPUT);
-        pinMode (WPI_JTAG2_TDI,INPUT);
-        pinMode (WPI_JTAG2_TDO,INPUT);
-	}
+    	pinMode (jtag_WPI_TCK,INPUT);
+    	pinMode (jtag_WPI_TMS,INPUT);
+    	pinMode (jtag_WPI_TDI,INPUT);
+    	pinMode (jtag_WPI_TDO,INPUT);
     if (verbose&4) printf("IO shutdown\n");
     }
 #endif
@@ -1028,9 +1004,19 @@ int main(int argc, char **argv)
 				}
 				break;
 #if JTAGIO == WPI
-			case 'G':
-				jtag_cable_WPI = 1;
+			case 'G': //
+				jtag_WPI_TCK = WPI_JTAG2_TCK;
+				jtag_WPI_TDO = WPI_JTAG2_TDO;
+				jtag_WPI_TMS = WPI_JTAG2_TMS;
+				jtag_WPI_TDI = WPI_JTAG2_TDI;
 				break;
+                        case 'O': // -o should be after -g
+                                if (jtag_WPI_TDO == WPI_JTAG2_TDO)
+                                  jtag_WPI_TDO = WPI_JTAG2_TDO2;
+                                else
+                                  jtag_WPI_TDO =  WPI_JTAG1_TDO2;
+                                printf("gpio port for TDO changed to %i\n",jtag_WPI_TDO);
+                                break;
 #endif
 			case 'I':
 				interactive = 1;
@@ -1091,6 +1077,7 @@ int main(int argc, char **argv)
         printf( "    -p(e/o)(i/d) val; set (PRE/POST)(IR/DR) chain parameter:\n");
 #if JTAGIO == WPI
         printf( "    -g			 : use alternative GPIO set (WPI_JTAG2_xxx)\n");
+        printf( "    -o                  : use alternative TDO signal (from carriers)\n");
 #endif
 		exit_status = 1;
 	}
