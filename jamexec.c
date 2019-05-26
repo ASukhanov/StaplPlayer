@@ -22,6 +22,7 @@
 /*																			*/
 /*	Actel version 1.1             May 2003									*/
 /*																			*/
+/* Version &RA01 20190525 #Fix 'assignment to constant' error with Libero12.0. 
 /****************************************************************************/
 
 #include "jamport.h"
@@ -36,6 +37,7 @@
 #include "jamarray.h"
 #include "jamjtag.h"
 #include "jamcomp.h"
+#include <stdio.h>
 
 /****************************************************************************/
 /*																			*/
@@ -3772,7 +3774,7 @@ JAM_RETURN_TYPE jam_process_exit
 
 	/*
 	*	Check range of exit code -- must be in range of signed 16-bit number
-	*	(from -32767 to 32767) for compatibility with 16-bit systems.
+	*	(from -32767 to 32767) for compatibilinanty with 16-bit systems.
 	*/
 	if (((status == JAMC_SUCCESS) &&
 		((exit_code_value < -32767L))) || (exit_code_value > 32767L))
@@ -5573,12 +5575,17 @@ JAM_RETURN_TYPE jam_process_assignment
 					case JAM_BOOLEAN_ARRAY_WRITABLE:
 						assign_type = JAM_BOOLEAN_EXPR;
 						break;
-
+                    
 					case JAM_INTEGER_ARRAY_INITIALIZED:
-					case JAM_BOOLEAN_ARRAY_INITIALIZED:
-						status = JAMC_ASSIGN_TO_CONST;
+						printf("WARNING: Assignment to integer constant\n");
+                        assign_type = JAM_INTEGER_EXPR; //&RA01
+                        break;
+                    case JAM_BOOLEAN_ARRAY_INITIALIZED:
+						printf("WARNING: Assignment to boolean constant\n");
+						//status = JAMC_ASSIGN_TO_CONST;//&RA01
+						assign_type = JAM_BOOLEAN_EXPR; //&RA01
 						break;
-
+                    
 					default:
 						status = JAMC_TYPE_MISMATCH;
 						break;
@@ -5636,6 +5643,7 @@ JAM_RETURN_TYPE jam_process_assignment
 					else
 					{
 						/* can't assign to an integer array */
+                        printf("can't assign to an integer array");
 						status = JAMC_SYNTAX_ERROR;
 					}
 				}
@@ -6252,6 +6260,7 @@ JAM_RETURN_TYPE jam_process_pop
 					case JAM_INTEGER_ARRAY_INITIALIZED:
 					case JAM_BOOLEAN_ARRAY_INITIALIZED:
 						status = JAMC_ASSIGN_TO_CONST;
+						printf("process_pop: JAMC_ASSIGN_TO_CONST\n");
 						break;
 
 					default:
