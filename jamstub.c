@@ -32,6 +32,7 @@
 /*	Andrei Sukhanov v3.2	August: 2014                                */
 /*      Andrei Sukhanov v3.3    2016-02-18 Alternative TDO (to work with port FEM XU2 */
 /*      A.Sukhanov v3.4		2016-03-31 Corrected WPI_JTAG1/2_TDO2 = 13/20 */
+/*      A.Sukhanov v3.5		2019-09-02 Removed pinmode, the setting should be done using gpio program*/
 /*									    */
 /****************************************************************************/
 #ifndef NO_ALTERA_STDIO
@@ -133,7 +134,7 @@ void outp(WORD address, WORD data) { address = address; data = data; }
 extern unsigned int _stklen = 50000;
 #endif
 #endif
-
+extern int jam_jtag_state;
 /************************************************************************
 *
 *	Global variables
@@ -359,7 +360,9 @@ int jam_jtag_io(int tms, int tdi, int read_tdo)
 			digitalWrite(jtag_WPI_TCK,1);
 			tdo = digitalRead(jtag_WPI_TDO);
 			digitalWrite(jtag_WPI_TCK,0);
-		if (verbose&2) printf("tms/i/o=%1i,%1i,%1i\n",tms,data,tdo); //&RA
+		if (verbose&2) printf("tms/i/o/s=%1i,%1i,%1i,%i\n",tms,data,tdo,\
+          jam_jtag_state); //&RA
+        //if (verbose&0x10) printf("jtag state %i\n",jam_jtag_state);
 #else
 		/* parallel port interface not available */
 		tdo = 0;
@@ -722,6 +725,7 @@ void jam_free(void *ptr)
 }
 static void io_setup()
 {
+/**/
 #if JTAGIO == WPI
     if (wiringPiSetup() == -1)
       printf("ERROR in wiringPiSetup()\n");
@@ -731,12 +735,17 @@ static void io_setup()
 			pinMode(jtag_WPI_TMS,OUTPUT);
 			pinMode(jtag_WPI_TDI,OUTPUT);
 			pinMode(jtag_WPI_TDO,INPUT);
+            pullUpDnControl(jtag_WPI_TDO,PUD_UP);
     }
-    if (verbose&4) printf("IO setup\n");
+    //if (verbose&4) printf("IO setup\n");
+    printf("Mode of WPI pins %i,%i,%i,changed to OUTPUT, %i to INPUT\n",\
+      jtag_WPI_TCK,jtag_WPI_TMS,jtag_WPI_TDI,jtag_WPI_TDO);
 #endif
+/**/
 }
 static void io_shutdown(void)
 {
+/*
 #if JTAGIO == WPI
     if(reset_jtag)
     {
@@ -744,9 +753,12 @@ static void io_shutdown(void)
     	pinMode (jtag_WPI_TMS,INPUT);
     	pinMode (jtag_WPI_TDI,INPUT);
     	pinMode (jtag_WPI_TDO,INPUT);
-    if (verbose&4) printf("IO shutdown\n");
+    //if (verbose&4) printf("IO shutdown\n");
+    printf("Mode of WPI pins %i,%i,%i,%i changed to INPUT\n",\
+      jtag_WPI_TCK,jtag_WPI_TMS,jtag_WPI_TDI,jtag_WPI_TDO);
     }
 #endif
+*/
 }
 
 /************************************************************************

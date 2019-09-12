@@ -9,3 +9,7 @@ Export: key = "ISC_Config_Result", 18 bits, value = HEX 03DE2
 Export: key = "ERROR_CODE", 16 bits, value = HEX 8052
 Exit code = 5... Entering ISP failure
 
+Data 190607
+Add the special option or instruction to disable RESET and DRUPDATE 
+during DRSCAN. It could be useful to read registers without modification.
+

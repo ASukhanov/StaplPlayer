@@ -574,6 +574,7 @@ void jam_jtag_reset_idle(void)
 	/*
 	*	Go to Test Logic Reset (no matter what the starting state may be)
 	*/
+    if (verbose &0x2) printf(">jam_jtag_reset_idle");
 	for (i = 0; i < 5; ++i)
 	{
 		jam_jtag_io(TMS_HIGH, TDI_LOW, IGNORE_TDO);
