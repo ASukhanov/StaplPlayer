@@ -4,15 +4,17 @@
 # Version 3	2014-10-21
 # Version 4     2016-02-19. Using environment variables.  
 # Version v5	2016-04-01. sp_option_passthrough comes from -o option to work with XU2 command port
+__version__ = 'v06 20190912' #do not crash when nonstartdard options are not used.
 import sys
 import os
-gpio_jtag0_cs = int(os.environ['GPIO_JTAG0_CS'])
-gpio_jtag1_cs = int(os.environ['GPIO_JTAG1_CS'])
+try:
+    gpio_jtag0_cs = int(os.environ['GPIO_JTAG0_CS'])
+    gpio_jtag1_cs = int(os.environ['GPIO_JTAG1_CS'])
+except:
+    gpio_jtag0_cs = None
+    gpio_jtag1_cs = None
+    
 sp_option_passthrough = ''
-
-#the following is needed only for -c option
-import wiringpi2
-
 
 if len(sys.argv) < 2:
   print('No arguments\n Usage example : staplcmd i8 1 2 i10 deadface fe0dfe0f')
